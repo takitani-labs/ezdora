@@ -1,33 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Activate mise to ensure node/npm are available (for non-interactive shells)
-if command -v mise >/dev/null 2>&1; then
-  eval "$(mise activate bash 2>/dev/null)" || true
-elif [ -f "$HOME/.local/bin/mise" ]; then
-  eval "$("$HOME/.local/bin/mise" activate bash 2>/dev/null)" || true
-fi
-
-# Ensure npm global bin is in PATH
-export PATH="$HOME/.npm-global/bin:$PATH"
+# Claude Code installation script - uses NATIVE installer (not npm)
+# npm version is deprecated and can cause conflicts
 
 if command -v claude >/dev/null 2>&1; then
-  echo "[ezdora][claude-code] Already installed. Skipping."
-  exit 0
+  # Check if it's the native version (should be at ~/.local/bin/claude)
+  CLAUDE_PATH=$(which claude)
+  if [[ "$CLAUDE_PATH" == *".npm-global"* ]]; then
+    echo "[ezdora][claude-code] WARNING: npm version detected. Removing and installing native..."
+    npm uninstall -g @anthropic-ai/claude-code 2>/dev/null || true
+  else
+    echo "[ezdora][claude-code] Already installed (native). Skipping."
+    exit 0
+  fi
 fi
 
-echo "[ezdora][claude-code] Installing Claude Code via npm..."
+echo "[ezdora][claude-code] Installing Claude Code via native installer..."
 
-# Ensure npm global directory exists and is configured
-mkdir -p "$HOME/.npm-global"
-npm config set prefix "$HOME/.npm-global" 2>/dev/null || true
-
-# Install Claude Code globally
-npm install -g @anthropic-ai/claude-code
+# Install via official installer
+curl -fsSL https://claude.ai/install.sh | bash
 
 # Verify installation
-if command -v claude >/dev/null 2>&1; then
-  CLAUDE_VERSION=$(claude --version 2>/dev/null || echo "unknown")
+if [ -f "$HOME/.local/bin/claude" ]; then
+  CLAUDE_VERSION=$("$HOME/.local/bin/claude" --version 2>/dev/null || echo "unknown")
   echo "[ezdora][claude-code] Installed successfully: $CLAUDE_VERSION"
 else
   echo "[ezdora][claude-code] ERROR: Installation failed"
@@ -108,5 +104,4 @@ fi
 
 echo "[ezdora][claude-code] Done."
 echo "[ezdora][claude-code] Run 'claude' to start, or 'claude auth' to authenticate."
-echo "[ezdora][claude-code] TIP: Add ~/.npm-global/bin to your PATH in .zshrc"
 echo "[ezdora][claude-code] Profiles available: clm (team-max), clt (team), clp (personal-max), clr (proton-max)"

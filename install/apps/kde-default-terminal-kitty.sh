@@ -27,6 +27,11 @@ if [ -z "$KW" ]; then
   exit 1
 fi
 
+# Set Kitty as the default terminal application for KDE
+echo "[ezdora][kde] Definindo Kitty como terminal padrão..."
+"$KW" --file kdeglobals --group General --key TerminalApplication kitty
+"$KW" --file kdeglobals --group General --key TerminalService org.kde.kitty.desktop
+
 echo "[ezdora][kde] Configurando atalho Ctrl+Alt+T para Kitty..."
 
 # Step 1: Create desktop file for Kitty if it doesn't exist

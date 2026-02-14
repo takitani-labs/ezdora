@@ -3,20 +3,5 @@
   "forceLoginOrgUUID": "{{CLAUDE_UUID_TEAM}}",
   "env": {
     "ENABLE_LSP_TOOLS": "1"
-  },
-  "mcpServers": {
-    "serena": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena",
-        "start-mcp-server",
-        "--project",
-        ".",
-        "--context",
-        "claude-code"
-      ]
-    }
   }
 }

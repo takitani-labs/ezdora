@@ -4,8 +4,10 @@ set -euo pipefail
 # Install AI CLIs (via npm) after Node is available through mise
 # Packages:
 # - @openai/codex (bin: codex)
-# - @anthropic-ai/claude-code (bin: claude)
 # - @google/gemini-cli (bin: gemini)
+#
+# NOTE: Claude Code is installed via native installer (not npm)
+# See: install/apps/claude-code.sh
 
 if ! command -v npm >/dev/null 2>&1; then
   echo "[ezdora][ai-cli] npm não encontrado. Garanta Node via mise (bash install/apps/mise-setup.sh) e reabra o shell." >&2
@@ -20,10 +22,10 @@ if [ "$CURRENT_PREFIX" != "$NPM_PREFIX" ]; then
   echo "[ezdora][ai-cli] Configurando npm para usar diretório do usuário..."
   mkdir -p "$NPM_PREFIX"
   npm config set prefix "$NPM_PREFIX"
-  
+
   # Add to PATH in current shell
   export PATH="$NPM_PREFIX/bin:$PATH"
-  
+
   # Add to shell configs if not present
   for RC_FILE in "$HOME/.bashrc" "$HOME/.zshrc"; do
     if [ -f "$RC_FILE" ]; then
@@ -34,13 +36,14 @@ if [ "$CURRENT_PREFIX" != "$NPM_PREFIX" ]; then
       fi
     fi
   done
-  
+
   echo "[ezdora][ai-cli] npm configurado para usar: $NPM_PREFIX"
 fi
 
 # Map packages to expected bin names for idempotency checks
-PKGS=("@openai/codex" "@anthropic-ai/claude-code" "@google/gemini-cli")
-BINS=("codex" "claude" "gemini")
+# NOTE: claude-code removed - use native installer instead
+PKGS=("@openai/codex" "@google/gemini-cli")
+BINS=("codex" "gemini")
 
 MISSING_PKGS=()
 for i in "${!PKGS[@]}"; do
@@ -51,7 +54,7 @@ for i in "${!PKGS[@]}"; do
 done
 
 if [ ${#MISSING_PKGS[@]} -eq 0 ]; then
-  echo "[ezdora][ai-cli] CLIs já instaladas (codex/claude/gemini). Pulando."
+  echo "[ezdora][ai-cli] CLIs já instaladas (codex/gemini). Pulando."
   exit 0
 fi
 
@@ -61,4 +64,5 @@ npm install -g "${MISSING_PKGS[@]}" || {
   exit 1
 }
 
-echo "[ezdora][ai-cli] Concluído. Configure variáveis: OPENAI_API_KEY, ANTHROPIC_API_KEY, GOOGLE_API_KEY."
+echo "[ezdora][ai-cli] Concluído. Configure variáveis: OPENAI_API_KEY, GOOGLE_API_KEY."
+echo "[ezdora][ai-cli] Para Claude Code, use: bash install/apps/claude-code.sh"
