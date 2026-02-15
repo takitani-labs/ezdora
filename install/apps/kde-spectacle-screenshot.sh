@@ -42,15 +42,29 @@ echo ""
 echo "Configuring Spectacle to copy screenshots to clipboard..."
 kwriteconfig6 --file spectaclerc --group "General" --key "clipboardGroup" "PostScreenshotCopyImage"
 
-# Set shortcuts via dbus (kwriteconfig6 alone does not reliably update kglobalaccel for Spectacle)
-echo "Setting keyboard shortcuts via kglobalaccel dbus..."
+# Write shortcuts to kglobalshortcutsrc so they persist across reboots.
+# Uses nested --group for the [services][org.kde.spectacle.desktop] section.
+echo "Writing shortcuts to kglobalshortcutsrc..."
+
+kwriteconfig6 --file kglobalshortcutsrc \
+  --group "services" --group "org.kde.spectacle.desktop" \
+  --key "RectangularRegionScreenShot" "Print"
+
+kwriteconfig6 --file kglobalshortcutsrc \
+  --group "services" --group "org.kde.spectacle.desktop" \
+  --key "_launch" 'Meta+Shift+Print\tMeta+Shift+S'
+
+echo "Config file updated."
+
+# Apply shortcuts to the running session via dbus
+echo "Applying shortcuts to running session via kglobalaccel dbus..."
 
 python3 << 'PYEOF'
 import sys
 try:
     import dbus
 except ImportError:
-    print("[ezdora][kde-spectacle] python3-dbus not found, falling back to kwriteconfig6 only")
+    print("[ezdora][kde-spectacle] python3-dbus not found, shortcuts will apply after reboot")
     sys.exit(0)
 
 bus = dbus.SessionBus()
@@ -82,7 +96,7 @@ for name, aid in [("_launch", launch_id), ("RectangularRegionScreenShot", region
     keys = iface.shortcut(aid)
     print(f"  {name}: {[hex(k) for k in keys]}")
 
-print("[ezdora][kde-spectacle] Shortcuts set successfully via dbus")
+print("[ezdora][kde-spectacle] Shortcuts applied to running session via dbus")
 PYEOF
 
 echo ""
