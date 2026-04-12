@@ -419,6 +419,42 @@ pw-start() {
 }
 
 # =====================================
+# AWS SSO Auto-Relogin Wrapper
+# =====================================
+# Detects expired SSO token and automatically re-authenticates
+aws() {
+    local output
+    output=$(command aws "$@" 2>&1)
+    local rc=$?
+    if [[ $rc -ne 0 ]] && echo "$output" | grep -q "Token has expired\|token.*expired\|refresh failed\|Error when retrieving token from sso"; then
+        echo "🔑 SSO token expired, re-authenticating..." >&2
+        # Find which profile was used
+        local profile=""
+        local args=("$@")
+        for ((i=1; i<=${#args[@]}; i++)); do
+            if [[ "${args[$i]}" == "--profile" ]]; then
+                profile="${args[$((i+1))]}"
+                break
+            fi
+        done
+        if [[ -z "$profile" ]]; then
+            profile="${AWS_PROFILE:-default}"
+        fi
+        command aws sso login --profile "$profile"
+        if [[ $? -eq 0 ]]; then
+            echo "✅ Re-authenticated. Retrying command..." >&2
+            command aws "$@"
+        else
+            echo "❌ SSO login failed" >&2
+            return 1
+        fi
+    else
+        echo "$output"
+        return $rc
+    fi
+}
+
+# =====================================
 # OPTIONAL: Custom Aliases
 # =====================================
 
