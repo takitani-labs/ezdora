@@ -2,6 +2,11 @@
 set -euo pipefail
 
 # Install Windsurf Editor - AI-powered code editor from Codeium
+# Opt-in: set EZDORA_INSTALL_WINDSURF=true to enable
+if [ "${EZDORA_INSTALL_WINDSURF:-false}" != "true" ]; then
+    echo "[ezdora][windsurf] Skipping (set EZDORA_INSTALL_WINDSURF=true to install)"
+    exit 0
+fi
 
 echo "[ezdora][windsurf] Instalando Windsurf Editor..."
 

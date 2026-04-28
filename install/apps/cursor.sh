@@ -2,6 +2,11 @@
 set -euo pipefail
 
 # Install Cursor editor from official RPM.
+# Opt-in: set EZDORA_INSTALL_CURSOR=true to enable
+if [ "${EZDORA_INSTALL_CURSOR:-false}" != "true" ]; then
+  echo "[ezdora][cursor] Skipping (set EZDORA_INSTALL_CURSOR=true to install)"
+  exit 0
+fi
 
 if command -v cursor >/dev/null 2>&1; then
   echo "[ezdora][cursor] Já instalado. Pulando."
