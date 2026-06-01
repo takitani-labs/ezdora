@@ -56,6 +56,24 @@ cd ezdora && bash install.sh
 - Animações configuradas para "Instant"
 - Cedilla fix para pt-BR (ç via apostrophe+c)
 
+### Apps opcionais (opt-in)
+
+Pulados por padrão. Habilite com a variável de ambiente correspondente antes de rodar o `install.sh`:
+
+| App | Variável | Descrição |
+|-----|----------|-----------|
+| **Zellij** | `EZDORA_INSTALL_ZELLIJ=true` | Terminal multiplexer/workspace ([zellij.dev](https://zellij.dev/)) |
+| **Cursor** | `EZDORA_INSTALL_CURSOR=true` | Editor AI (fork do VS Code) |
+| **Windsurf** | `EZDORA_INSTALL_WINDSURF=true` | Editor AI da Codeium |
+
+```bash
+# Exemplo: instalar tudo + Zellij
+EZDORA_INSTALL_ZELLIJ=true bash install.sh
+
+# Ou rodar só o instalador do Zellij
+EZDORA_INSTALL_ZELLIJ=true bash install/apps/zellij.sh
+```
+
 ## Estrutura
 
 ```
