@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- **ZapZap memory guard** (`install/apps/zapzap-memguard.sh`)
+  - Installs a systemd user timer that restarts ZapZap (WhatsApp) when its
+    summed RSS crosses 20 GB. ZapZap uses QtWebEngine and leaks memory over long
+    uptimes (observed at ~43 GB); this caps it automatically.
+  - Checks every 5 minutes; idempotent; tolerant of headless/CI runs.
+
 ## v0.2.0 — 2025-12-30 — Claude Code & Modern Tooling
 
 ### Added
