@@ -17,15 +17,6 @@ All notable changes to this project will be documented in this file.
     tokens). Only touches profile dirs that already exist.
   - Covers English prose tells (em dashes, AI vocabulary, sycophancy, filler)
     plus a short pt-BR section. Based on github.com/blader/humanizer.
-- **Tabularis** opt-in installer (`install/apps/tabularis.sh`)
-  - Open-source desktop SQL workspace (Tauri) with a built-in MCP server for AI
-    agents. Enable with `EZDORA_INSTALL_TABULARIS=true`.
-  - Installs the **official signed `.rpm`** from GitHub Releases and verifies its
-    Tauri/minisign signature against the project's pinned public key **before**
-    installing (fail-closed; prefers `minisign`, falls back to `python3` +
-    `cryptography`). Deliberately avoids the unofficial flatpark.org Flatpak.
-  - Prints post-install security notes (enable keychain per connection; plugins
-    run unsigned/unsandboxed code; AI/MCP sends schema+queries to your provider).
 - **ZapZap memory guard** (`install/apps/zapzap-memguard.sh`)
   - Installs a systemd user timer that restarts ZapZap (WhatsApp) when its
     summed RSS crosses 20 GB. ZapZap uses QtWebEngine and leaks memory over long
