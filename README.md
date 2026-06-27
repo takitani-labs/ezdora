@@ -65,6 +65,7 @@ Pulados por padrão. Habilite com a variável de ambiente correspondente antes d
 | **Zellij** | `EZDORA_INSTALL_ZELLIJ=true` | Terminal multiplexer/workspace ([zellij.dev](https://zellij.dev/)) |
 | **Cursor** | `EZDORA_INSTALL_CURSOR=true` | Editor AI (fork do VS Code) |
 | **Windsurf** | `EZDORA_INSTALL_WINDSURF=true` | Editor AI da Codeium |
+| **Tabularis** | `EZDORA_INSTALL_TABULARIS=true` | Cliente SQL desktop (Tauri) com MCP server p/ IA — RPM oficial assinado, verificado via minisign ([tabularis.dev](https://tabularis.dev/)) |
 
 ```bash
 # Exemplo: instalar tudo + Zellij
