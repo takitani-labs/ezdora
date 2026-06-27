@@ -33,6 +33,7 @@ cd ezdora && bash install.sh
 - **Claude Code** - AI coding assistant (npm global)
   - MCP servers (serena, claude-mem)
   - Multi-profile support (team, personal, etc.)
+  - Writing-style guide ("não parecer IA") importado em todos os profiles
 - **Mise** - Gerenciador de versões (Node, .NET, Python, Go, etc.)
 - **Neovim** - Editor com LazyVim
 - **VS Code** - Editor (via repo Microsoft)
@@ -115,6 +116,20 @@ claude-profile              # Mostrar profile atual
 
 Edite `~/.claude-profiles/*/settings.json` com seus UUIDs de organização:
 - Encontre em: https://console.anthropic.com/settings/organization
+
+### Writing style (não parecer IA)
+
+`install/apps/claude-code-writing-style.sh` instala um guia de escrita em
+`~/.claude/writing-style.md` e adiciona um `@import` em cada `CLAUDE.md` (base e
+todos os profiles), então ele carrega em toda sessão. O guia cobre os "AI tells"
+mais comuns (travessão, vocabulário de IA, bajulação, filler) com uma seção
+pt-BR. Fonte: [blader/humanizer](https://github.com/blader/humanizer).
+
+- Fonte única: edite `install/templates/claude/writing-style.md` e rode o script
+  de novo para propagar.
+- Idempotente: um marcador em comentário HTML protege o bloco de `@import`
+  (comentários HTML são removidos antes de ir pro contexto do Claude, custo zero).
+- Na primeira sessão após instalar, o Claude pede aprovação 1x do import externo.
 
 ## Templates
 

@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Claude writing-style guide** (`install/apps/claude-code-writing-style.sh`)
+  - Deploys a shared "write so it doesn't read as AI" guide to
+    `~/.claude/writing-style.md` and wires it into every Claude memory file
+    (base `~/.claude/CLAUDE.md` plus each `~/.claude-profiles/*/CLAUDE.md`) via
+    an `@~/.claude/writing-style.md` import, so it loads in every session across
+    all profiles.
+  - Single source of truth in `install/templates/claude/writing-style.md`: edit
+    it and re-run to propagate. Idempotent (an HTML-comment marker guards the
+    import block; markers are stripped from Claude's context, so they cost no
+    tokens). Only touches profile dirs that already exist.
+  - Covers English prose tells (em dashes, AI vocabulary, sycophancy, filler)
+    plus a short pt-BR section. Based on github.com/blader/humanizer.
 - **Tabularis** opt-in installer (`install/apps/tabularis.sh`)
   - Open-source desktop SQL workspace (Tauri) with a built-in MCP server for AI
     agents. Enable with `EZDORA_INSTALL_TABULARIS=true`.
