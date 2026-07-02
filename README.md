@@ -66,6 +66,7 @@ Pulados por padrão. Habilite com a variável de ambiente correspondente antes d
 | **Zellij** | `EZDORA_INSTALL_ZELLIJ=true` | Terminal multiplexer/workspace ([zellij.dev](https://zellij.dev/)) |
 | **Cursor** | `EZDORA_INSTALL_CURSOR=true` | Editor AI (fork do VS Code) |
 | **Windsurf** | `EZDORA_INSTALL_WINDSURF=true` | Editor AI da Codeium |
+| **Claude Desktop** | `EZDORA_INSTALL_CLAUDE_DESKTOP=true` | App desktop (beta) via container Ubuntu/distrobox, já que o beta só suporta Debian |
 
 ```bash
 # Exemplo: instalar tudo + Zellij
